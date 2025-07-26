@@ -45,51 +45,10 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	Engine::Initialize();  // エンジンの初期化
 
-	// メッセージループ
-	MSG msg = {};
-	while (true) {
-		// メッセージがある場合は処理
-		while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
-			if (msg.message == WM_QUIT) {
-				break;
-			}
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-
-		if (msg.message == WM_QUIT) {
-			break;
-		}
-
-		Engine::Update();  // ゲームロジック処理
-		Engine::Draw();    // 描画処理
-	}
+	Engine::Run();  // メインループ処理
 
 	Engine::Finalize();  // エンジンの終了処理
 
-	return static_cast<int>(msg.wParam);
+	return 0;
 
-}
-
-/*******************************************************************************
- 関数名:	LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
- 引数　:	hwnd: ウィンドウハンドル
-			uMsg: メッセージの識別子
-			wParam: メッセージに関連する追加情報
-			lParam: メッセージに関連する追加情報
- 戻り値:	 メッセージの処理結果
- 説明　:	ウィンドウプロシージャ
-			ウィンドウに送られるメッセージを処理する関数
-*******************************************************************************/
-LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	// メッセージに応じた処理を行う
-	switch (uMsg) {
-	case WM_DESTROY:    // ウィンドウが破棄されるときの処理
-		PostQuitMessage(0);  // ウィンドウの終了処理
-		return 0;
-	}
-
-	// その他のメッセージを処理
-	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
