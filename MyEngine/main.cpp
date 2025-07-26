@@ -11,6 +11,7 @@
 #include "main.h"
 #include <windows.h>
 #include "Engine/Core/Engine.h"
+#include "Engine/Window/Window.h"
 
 /*******************************************************************************
 * グローバル変数
@@ -33,52 +34,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 *******************************************************************************/
 int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmd, _In_ int nCmdShow) {
 
-	// ウィンドウクラス名
-	const char* CLASS_NAME = "MyWindowClass";
-	// ウィンドウタイトル
-	const char* WINDOW_NAME = "My DirectX12 Engine Windowゲーム";
-
-	// ウィンドウクラスの登録
-	WNDCLASSEX wc = {};             // WNDCLASSEX構造体の初期化
-	wc.cbSize = sizeof(WNDCLASSEX); // 構造体のサイズを設定
-	wc.style = 0;                   // ウィンドウスタイルの設定
-	wc.lpfnWndProc = WndProc;       // ウィンドウプロシージャのポインタ
-	wc.cbClsExtra = 0;              // クラスの追加情報のサイズ
-	wc.cbWndExtra = 0;              //  ウィンドウの追加情報のサイズ
-	wc.hInstance = hInstance;       // アプリケーションのインスタンスハンドル
-	wc.hIcon = nullptr;             // アイコンのハンドル（nullptrはデフォルトアイコンを使用）
-	wc.lpszClassName = CLASS_NAME;  // クラス名
-	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);    // カーソルの種類設定
-	wc.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);  // ウィンドウの背景色の設定
-	wc.lpszMenuName = nullptr;      // メニュー名（nullptrはメニューなし）
-	wc.hIconSm = nullptr;           // 小さいアイコンのハンドル（nullptrはデフォルトアイコンを使用）
-
-	// wcをWindowsへ登録
-	if (!RegisterClassEx(&wc)) {
-		MessageBox(nullptr, "ウィンドウクラスの登録に失敗しました", "エラー", MB_ICONERROR);
-		return -1;
-	}
-
-	// ウィンドウの生成
-	HWND hwnd = CreateWindowEx(
-		0,  // 拡張スタイル（なし）
-		CLASS_NAME, // クラス名
-		WINDOW_NAME,  // ウィンドウのタイトル
-		WS_OVERLAPPEDWINDOW,    // ウィンドウスタイル（オーバーラップウィンドウ）
-		CW_USEDEFAULT, CW_USEDEFAULT, SCREEN_WIDTH, SCREEN_HEIGHT,	// ウィンドウの位置とサイズ（デフォルト位置、幅1280、高さ720）
-		nullptr, nullptr, hInstance, nullptr	// 親ウィンドウ、メニュー、インスタンスハンドル、追加データ（nullptrはなし）
-	);
-
-	// ウィンドウの生成に失敗した場合のエラーハンドリング
-	if (!hwnd) {
-		MessageBox(nullptr, "ウィンドウの生成に失敗しました", "エラー", MB_ICONERROR);
+	//ウィンドウの作成
+	Window window(hInstance);
+	if (!window.Create("My DirectX12 Engine Window", SCREEN_WIDTH, SCREEN_HEIGHT)) {
 		return -1;
 	}
 
 	// ウィンドウの表示
-	ShowWindow(hwnd, nCmdShow);
-	// ウィンドウの更新
-	UpdateWindow(hwnd);
+	window.Show(nCmdShow);
 
 	Engine::Initialize();  // エンジンの初期化
 
