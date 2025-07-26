@@ -53,5 +53,8 @@
     <ClInclude Include="Engine.h">
       <Filter>Engine\Core</Filter>
     </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>App\ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
