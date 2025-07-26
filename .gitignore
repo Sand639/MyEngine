@@ -39,3 +39,21 @@
 
 # debug information files
 *.dwo
+
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.VC.db
+*.VC.opendb
+*.suo
+
+# Build artifacts
+x64/
+Debug/
+Release/
+*.obj
+*.pdb
+*.exe
+
+# Others
+*.log
